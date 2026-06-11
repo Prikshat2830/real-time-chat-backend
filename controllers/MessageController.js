@@ -1,5 +1,6 @@
 import Message from "../models/Message.js";
 import Chat from "../models/Chat.js";
+import User from "../models/User.js";
 
 export const sendMessage = async (req, res) => {
     const { content, chatId } = req.body;
@@ -16,7 +17,12 @@ export const sendMessage = async (req, res) => {
         });
 
         message = await message.populate("sender", "name email");
-        message = await message.populate("chat");
+message = await message.populate("chat");
+
+message = await User.populate(message, {
+    path: "chat.users",
+    select: "name email",
+});
 
         await Chat.findByIdAndUpdate(chatId, {
             latestMessage: message,
