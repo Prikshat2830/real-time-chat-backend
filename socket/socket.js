@@ -26,9 +26,9 @@ const socketHandler = (io) => {
       if (!chat.users) return;
 
       chat.users.forEach((user) => {
-          if (user._id === message.sender._id) return
-          console.log("sending to user:", user._id)
-          socket.to(user._id).emit("message received", message)
+      if (user._id.toString() === message.sender._id.toString()) return
+
+      socket.to(user._id.toString()).emit("message received", message)
       })
     //   chat.users.forEach((userId) => {
     //     if (userId === message.sender._id) return;
